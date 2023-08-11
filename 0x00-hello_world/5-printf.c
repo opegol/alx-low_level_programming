@@ -2,7 +2,8 @@
 
 #include <stdio.h>
 
-int main (void)
+int main(void)
+/* MAIN FUNCTION */
 {
 	printf("with proper grammar, but the outcome is a piece of art,\n");
 
