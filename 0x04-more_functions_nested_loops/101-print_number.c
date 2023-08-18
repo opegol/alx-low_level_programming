@@ -1,5 +1,4 @@
 /* 101-print_number.c */
-#include <stdio.h>
 #include "main.h"
 
 /**
