@@ -1,1 +1,1 @@
-README file for Alx low level programming project
+Readme file for 0x05 ponters, arrays ad string project
