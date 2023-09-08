@@ -72,7 +72,7 @@ int conv_to_digit(char d)
 
 	if (dgt < 0 || dgt > 9)
 	{
-		_putchar('E');	
+		_putchar('E');
 		_putchar('r');
 		_putchar('r');
 		_putchar('o');
@@ -116,7 +116,7 @@ void single_mul(char *prod, char *mult, int digit, int zeros)
 	{
 		if (*mult < '0' || *mult > '9')
 		{
-			_putchar('E');	
+			_putchar('E');
 			_putchar('r');
 			_putchar('r');
 			_putchar('o');
@@ -190,7 +190,7 @@ int main(int argc, char *argv[])
 
 	if (argc != 3)
 	{
-		_putchar('E');	
+		_putchar('E');
 		_putchar('r');
 		_putchar('r');
 		_putchar('o');
