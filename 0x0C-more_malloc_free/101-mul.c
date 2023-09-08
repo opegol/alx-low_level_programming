@@ -72,7 +72,12 @@ int conv_to_digit(char d)
 
 	if (dgt < 0 || dgt > 9)
 	{
-		printf("Error\n");
+		_putchar('E');	
+		_putchar('r');
+		_putchar('r');
+		_putchar('o');
+		_putchar('r');
+		_putchar('\n');
 		exit(98);
 	}
 
@@ -111,7 +116,12 @@ void single_mul(char *prod, char *mult, int digit, int zeros)
 	{
 		if (*mult < '0' || *mult > '9')
 		{
-			printf("Error\n");
+			_putchar('E');	
+			_putchar('r');
+			_putchar('r');
+			_putchar('o');
+			_putchar('r');
+			_putchar('\n');
 			exit(98);
 		}
 
@@ -180,7 +190,12 @@ int main(int argc, char *argv[])
 
 	if (argc != 3)
 	{
-		printf("Error\n");
+		_putchar('E');	
+		_putchar('r');
+		_putchar('r');
+		_putchar('o');
+		_putchar('r');
+		_putchar('\n');
 		exit(98);
 	}
 
@@ -190,8 +205,8 @@ int main(int argc, char *argv[])
 		argv[2] = parse_zeros(argv[2]);
 	if (*(argv[1]) == '\0' || *(argv[2]) == '\0')
 	{
-		putchar('0');
-		putchar('\n');
+		_putchar('0');
+		_putchar('\n');
 		return (0);
 	}
 
@@ -208,9 +223,9 @@ int main(int argc, char *argv[])
 	for (i = 0; final_prod[i]; i++)
 	{
 		if (final_prod[i] != 'a')
-			putchar(final_prod[i]);
+			_putchar(final_prod[i]);
 	}
-	putchar('\n');
+	_putchar('\n');
 
 	free(next_prod);
 	free(final_prod);

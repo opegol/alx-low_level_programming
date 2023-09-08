@@ -26,9 +26,9 @@ char *string_nconcat(char *s1, char *s2, unsigned int n)
 		return (NULL);
 
 	if (s1 == NULL)
-		s1[0] = '\0';
+		s1 = "";
 	if (s2 == NULL)
-		s2[0] = '\0';
+		s2 = "";
 
 	for (j = 0; s1[j] != '\0'; j++)
 		s[j] = s1[j];
