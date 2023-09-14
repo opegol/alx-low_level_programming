@@ -1,3 +1,6 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 /**
  * main - prints the opcodes of its own main function.
  * @argc: number of arguments passed to the program
@@ -31,7 +34,7 @@ int main(int argc, char *argv[])
 
 		if (i == bytes - 1)
 			continue;
-		printf("");
+		printf(" ");
 
 		address++;
 	}
