@@ -2,7 +2,7 @@
 #include "lists.h"
 
 /**
- * free_listnt - frees a listint_t list
+ * free_listint - frees a listint_t list
  * @head : linked list to be freed
  */
 void free_listint(listint_t *head)
