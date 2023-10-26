@@ -2,41 +2,85 @@
 #include <stdlib.h>
 #include "lists.h"
 
+int loopcount(const listint_t *head);
+listint_t *find_listint_loop(listint_t *head);
+
 /**
- * find_listint_loop - finds the loop in a linked list.
+ * loopcount - counts number of nodes in loop
  * @head : given listint_t list head node
- * Return: The address of the node where the loop starts,
+ * Return: count of loop nodes or 0 if no loop
+ */
+int loopcount(listint_t *head)
+{
+	listint_t *s;
+	listint_t *f;
+	listint_t *tmp;
+	int count = 1;
+
+	s = head;
+	f = head;
+
+	while (s && f && f->next)
+	{
+		s = s->next;
+		f = (f->next)->next;
+		if (s == f)
+		{
+			tmp = s;
+			while (tmp->next != s)
+			{
+				count++;
+				tmp = tmp->next;
+			}
+			return (count);
+		}
+	}
+	return (0);
+}
+
+/**
+ * find_listint_loop - finds the loop listint_t linked list.
+ * @head : given listint_t list head node
+ * Return: address of the node where the loop starts,
  *	or NULL if there is no loop
  */
-listint_t *find_listint_loop(listint_t *head)
+listint_t *find_listint_loop(listint_t *head);
 {
-	listint_t *temp1;
-	/*listint_t *temp2;*/
+	size_t i = 0;
+	const listint_t *tmp1, *tmp2;
+	int count, j;
 
 	if (head == NULL)
-		return (NULL);
+		exit(98);
 
-	temp1 = head;
+	tmp1 = head;
+	count = loopcount(tmp1);
 
-	while (temp1 != NULL)
+	if (count == 0)
 	{
-		head = temp1->next;
+		return (NULL);
+	}
+	else
+	{
 		while (head != NULL)
 		{
-			if (head == temp1)
-			{
-				printf("temp1: %d\n", temp1->n);
-				printf("head->next: %d\n", head->next->n);
-				return (head);
-			}
-			if (head->next == NULL)
-				break;
-			head = head->next;
+			tmp2 = head;
 
-			printf("temp1: %d\n", temp1->n);
-			printf("head: %d\n", head->n);
+			for (j = 0; j < count; j++)
+			{
+				head = head->next;
+			}
+			if (tmp2 == head)
+			{
+				while (tmp2->next != head)
+					tmp2 = tmp2->next;
+				return (tmp2);
+
+			}
+			head = tmp->next;
 		}
-		temp1 = temp1->next;
 	}
+
 	return (NULL);
+
 }
