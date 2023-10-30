@@ -24,7 +24,7 @@ void close_file(int fd)
  */
 int main(int ac, char **av)
 {
-	int fd_ff, fd_ft, rc;
+	int fd_ff, fd_ft, rc, wc;
 	char *buff;
 
 	if (ac != 3)
@@ -39,18 +39,19 @@ int main(int ac, char **av)
 		exit(98);
 	}
 	fd_ft = open(av[2], O_CREAT | O_RDWR | O_TRUNC, 00664);
-	if (fd_ft < 0)
-	{
-		dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
-		exit(99);
-	}
+
 	do {
 		buff = malloc(1024 * sizeof(char));
 		if (buff == NULL)
 			return (-1);
 		rc = read(fd_ff, buff, 1024);
-		/*dprintf(fd_ft, "%s", buff);*/
-		write(fd_ft, buff, rc);
+
+		wc = write(fd_ft, buff, rc);		
+		if (fd_ft == -1 || wc == -1 )
+		{
+			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
+			exit(99);
+		}
 		free(buff);
 		if (rc < 1024)
 			break;
