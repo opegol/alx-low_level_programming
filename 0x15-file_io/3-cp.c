@@ -38,7 +38,7 @@ int main(int ac, char **av)
 		dprintf(STDERR_FILENO, "Error: Can't read from file %s\n", av[1]);
 		exit(98);
 	}
-	fd_ft = open(av[2], O_CREAT | O_RDWR | O_TRUNC, 00664);
+	fd_ft = open(av[2], O_CREAT | O_WRONGLY | O_TRUNC, 00664);
 
 	do {
 		buff = malloc(1024 * sizeof(char));
@@ -46,8 +46,8 @@ int main(int ac, char **av)
 			return (-1);
 		rc = read(fd_ff, buff, 1024);
 
-		wc = write(fd_ft, buff, rc);		
-		if (fd_ft == -1 || wc == -1 )
+		wc = write(fd_ft, buff, rc);
+		if (fd_ft == -1 || wc == -1)
 		{
 			dprintf(STDERR_FILENO, "Error: Can't write to %s\n", av[2]);
 			exit(99);
