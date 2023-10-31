@@ -238,6 +238,20 @@ void p_entry(unsigned long int e_entry, unsigned char *e_ident)
 }
 
 /**
+ * _close - Close an ELF file.
+ * @elf: The file descriptor of the ELF file.
+ */
+void _close(int elf)
+{
+	if (close(elf) == -1)
+	{
+		dprintf(STDERR_FILENO,
+			"Error: Can't close fd %d\n", elf);
+		exit(98);
+	}
+}
+
+/**
  * main - Displays the information contained in the
  *        ELF header at the start of an ELF file.
  * @ac: number of arguments to program.
@@ -259,7 +273,7 @@ int main(int __attribute__((__unused__)) ac, char **av)
 	elf_header = malloc(sizeof(Elf64_Ehdr));
 	if (elf_header == NULL)
 	{
-		close(fd);
+		_close(fd);
 		dprintf(STDERR_FILENO, "Error: Can't read file %s\n", av[1]);
 		exit(98);
 	}
@@ -267,7 +281,7 @@ int main(int __attribute__((__unused__)) ac, char **av)
 	if (rc < 0)
 	{
 		free(elf_header);
-		close(fd);
+		_close(fd);
 		dprintf(STDERR_FILENO, "Error: `%s`: No such file\n", av[1]);
 		exit(98);
 	}
@@ -284,7 +298,7 @@ int main(int __attribute__((__unused__)) ac, char **av)
 	p_entry(elf_header->e_entry, elf_header->e_ident);
 
 	free(elf_header);
-	close(fd);
+	_close(fd);
 	return (0);
 }
 
