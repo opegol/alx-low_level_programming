@@ -43,7 +43,7 @@ int loopcount(const listint_t *head)
  * @head : given listint_t list head node
  * Return: the number of nodes in the list
  */
-size_t free_listint_safe(const listint_t *head)
+size_t print_listint_safe(const listint_t *head)
 {
 	size_t i = 0;
 	const listint_t *tmp1, *tmp2;
