@@ -1,13 +1,14 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "hash_tables.c"
+#include "hash_tables.h"
 
 shash_table_t *shash_table_create(unsigned long int size);
 int shash_table_set(shash_table_t *ht, const char *key, const char *value);
 char *shash_table_get(const shash_table_t *ht, const char *key);
 void shash_table_print(const shash_table_t *ht);
 void shash_table_print_rev(const shash_table_t *ht);
+void free_list(shash_node_t *head);
 void shash_table_delete(shash_table_t *ht);
 
 /**
@@ -28,13 +29,13 @@ shash_table_t *shash_table_create(unsigned long int size)
 	{
 		return (NULL);
 	}
-	
+
 	item = malloc(sizeof(shash_node_t *) * size);
 	if (!item)
 	{
 		return (NULL);
 	}
-	for (i =0; i < size; i++)
+	for (i = 0; i < size; i++)
 	{
 		item[i] = NULL;
 	}
@@ -45,7 +46,7 @@ shash_table_t *shash_table_create(unsigned long int size)
 
 	return (new_h);
 }
-	
+
 
 /**
  * shash_table_set - a function that adds an element to the hash table.
@@ -58,9 +59,8 @@ shash_table_t *shash_table_create(unsigned long int size)
 
 int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 {
-
 	unsigned long int index;
-	shash_node_t *new_node, *tmp;
+	shash_node_t *new_node, *tmp = NULL, *tab_head, *tab_tail;
 	char *val;
 
 	if (ht == NULL || value == NULL)
@@ -77,18 +77,57 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 		return (0);
 	new_node->value = val;
 	new_node->next = NULL;
+	new_node->sprev = NULL;
+	new_node->snext = NULL;
+
+	if (ht->shead == NULL && ht->stail == NULL)
+	{
+		ht->shead = new_node;
+		ht->stail = new_node;
+	}
+	else
+	{
+		if (strcmp(new_node->key, ht->shead->key) < 0)
+			ht->shead = new_node;
+		tab_head = ht->shead;
+
+		while (tab_head && (strcmp(new_node->key, tab_head->key) > 0))
+		{
+			tmp = tab_head;
+			tab_head = tab_head->snext;
+		}
+		if (tmp)
+			tmp->snext = new_node;
+		new_node->sprev = tmp;
+
+		if (strcmp(new_node->key, ht->stail->key) > 0)
+			ht->stail = new_node;
+		tab_tail = ht->stail;
+
+		tmp = NULL;
+		while (tab_tail && (strcmp(new_node->key, tab_tail->key) < 0))
+		{
+			tmp = tab_tail;
+			tab_tail = tab_tail->sprev;
+		}
+		if (tmp)
+			tmp->sprev = new_node;
+		new_node->snext = tmp;
 
 
-	if (ht->array[index] == NULL)
-	{
-		ht->array[index] = new_node;
+		tmp = NULL;
+		if (ht->array[index] == NULL)
+		{
+			ht->array[index] = new_node;
+		}
+		else
+		{
+			tmp = ht->array[index];
+			ht->array[index] = new_node;
+			new_node->next = tmp;
+		}
 	}
-	else 
-	{
-		tmp = ht->array[index];
-		ht->array[index] = new_node;
-		new_node->next = tmp;
-	}
+
 	return (1);
 }
 
@@ -104,7 +143,7 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
 	shash_node_t *item;
 
 	if (key == NULL)
-		return NULL;
+		return (NULL);
 
 	index = key_index((const unsigned char *)key, ht->size);
 	item = ht->array[index];
@@ -127,28 +166,21 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
  */
 void shash_table_print(const shash_table_t *ht)
 {
-	int j = 0;
-	unsigned long int i;
+	int f = 0;
 	shash_node_t *item;
 
 	printf("{");
-	for (i = 0; i < ht->size; i++)
+	item = ht->shead;
+	while (item)
 	{
-		item = ht->array[i];
-		if (!item)
-			continue;
-		while (item)
+		if (f == 0)
 		{
-			if (j == 0)
-			{	
-				printf("'%s': '%s'", item->key, item->value);
-				j = 1;
-			}
-		
-			else
-				printf(", '%s': '%s'", item->key, item->value);
-			item = item->next;
+			printf("'%s': '%s'", item->key, item->value);
+			f = 1;
 		}
+		else
+			printf(", '%s': '%s'", item->key, item->value);
+		item = item->snext;
 	}
 	printf("}\n");
 }
@@ -159,9 +191,24 @@ void shash_table_print(const shash_table_t *ht)
  */
 void shash_table_print_rev(const shash_table_t *ht)
 {
+	int j = 0;
+	shash_node_t *item;
 
+	printf("{");
+	item = ht->stail;
+	while (item)
+	{
+		if (j == 0)
+		{
+			printf("'%s': '%s'", item->key, item->value);
+			j = 1;
+		}
+		else
+			printf(", '%s': '%s'", item->key, item->value);
+		item = item->sprev;
+	}
+	printf("}\n");
 }
-
 
 /**
  * free_list - frees a list_t list
@@ -181,7 +228,7 @@ void free_list(shash_node_t *head)
 }
 
 /**
- * hash_table_delete - deletes a hash table
+ * shash_table_delete - deletes a hash table
  * @ht : the hash table
  */
 void shash_table_delete(shash_table_t *ht)
