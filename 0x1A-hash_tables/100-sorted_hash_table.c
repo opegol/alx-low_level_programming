@@ -69,12 +69,23 @@ int shash_table_set(shash_table_t *ht, const char *key, const char *value)
 		return (0);
 
 	new_node = malloc(sizeof(shash_node_t));
+	if (new_node == NULL)
+		return (0);
 
 	index = key_index((const unsigned char *)key, ht->size);
-	new_node->key = (char *)key;
+	new_node->key = strdup((char *)key);
+	if (new_node->key == NULL)
+	{
+		free(new_node);
+		return (0);
+	}
 	val = strdup(value);
 	if (val == NULL)
+	{
+		free(new_node->key);
+		free(new_node);
 		return (0);
+	}
 	new_node->value = val;
 	new_node->next = NULL;
 	new_node->sprev = NULL;
@@ -142,15 +153,17 @@ char *shash_table_get(const shash_table_t *ht, const char *key)
 	unsigned long int index;
 	shash_node_t *item;
 
-	if (key == NULL)
+	if (ht == NULL || key == NULL || key[0] == '\n')
 		return (NULL);
 
 	index = key_index((const unsigned char *)key, ht->size);
+	if (index >= ht->size)
+		return (NULL);
 	item = ht->array[index];
 
 	while (item)
 	{
-		if (strcmp(item->key, key) == 0)
+		if (item && (strcmp(item->key, key) == 0))
 		{
 			return (item->value);
 		}
@@ -222,6 +235,7 @@ void free_list(shash_node_t *head)
 	{
 		temp = head;
 		free(temp->value);
+		free(temp->key);
 		head = head->next;
 		free(temp);
 	}
