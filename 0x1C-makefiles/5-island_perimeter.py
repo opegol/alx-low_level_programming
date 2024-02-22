@@ -18,14 +18,14 @@ def island_perimeter(grid):
     """
 
     x = len(grid[0])
-    y = len(grid) 
+    y = len(grid)
     perim = 0
     ng = []
     for i in range(y + 2):
         g = []
         for j in range(x + 2):
             if (i == 0 or i == y + 1):
-                g.append(0);
+                g.append(0)
             elif (j == 0 or j == x + 1):
                 g.append(0)
             else:
