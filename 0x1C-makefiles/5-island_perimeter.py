@@ -20,8 +20,8 @@ def island_perimeter(grid):
     x = len(grid[0])
     y = len(grid)
     perim = 0
-    for i in range(y-2):
-        for j in range(x-2):
+    for i in range(y-1):
+        for j in range(x-1):
             if grid[i+1][j+1] == 1:
                 zeros = (4 - (grid[i][j+1] + grid[i+2][j+1]
                          + grid[i+1][j] + grid[i+1][j+2]))
