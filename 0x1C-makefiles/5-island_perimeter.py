@@ -25,6 +25,5 @@ def island_perimeter(grid):
             if grid[i+1][j+1] == 1:
                 zeros = (4 - (grid[i][j+1] + grid[i+2][j+1]
                          + grid[i+1][j] + grid[i+1][j+2]))
-                if zeros < 4:
-                    perim += zeros
+                perim += zeros
     return perim
