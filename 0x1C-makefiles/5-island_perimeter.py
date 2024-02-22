@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+"""Function calculates the perimeter of an island of square blocks"""
+
+
 def island_perimeter(grid):
     """Returns the perimeter of the island described in grid
         grid is a list of list of integers
