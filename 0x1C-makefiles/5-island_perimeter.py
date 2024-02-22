@@ -18,12 +18,23 @@ def island_perimeter(grid):
     """
 
     x = len(grid[0])
-    y = len(grid)
+    y = len(grid) 
     perim = 0
-    for i in range(y-1):
-        for j in range(x-1):
-            if grid[i+1][j+1] == 1:
-                zeros = (4 - (grid[i][j+1] + grid[i+2][j+1]
-                         + grid[i+1][j] + grid[i+1][j+2]))
+    ng = []
+    for i in range(y + 2):
+        g = []
+        for j in range(x + 2):
+            if (i == 0 or i == y + 1):
+                g.append(0);
+            elif (j == 0 or j == x + 1):
+                g.append(0)
+            else:
+                g.append(grid[i-1][j-1])
+        ng.append(g)
+    for i in range(y):
+        for j in range(x):
+            if ng[i+1][j+1] == 1:
+                zeros = (4 - (ng[i][j+1] + ng[i+2][j+1]
+                         + ng[i+1][j] + ng[i+1][j+2]))
                 perim += zeros
     return perim
