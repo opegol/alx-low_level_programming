@@ -14,13 +14,10 @@
 int bslr(int *array, int left, size_t size, int value)
 {
 	size_t i, s;
-	int l, r, m, ret, offset;
+	int l = 0, r = size - 1, m, ret, offset;
 
 	if (size == 0)
 		return (-1);
-
-	l = 0;
-	r = size - 1;
 
 	printf("Searching in array: ");
 	for (i = 0; i < size - 1; i++)
@@ -35,7 +32,9 @@ int bslr(int *array, int left, size_t size, int value)
 		{
 			s = (size_t)m + 1;
 			offset = left;
-			m = (bslr(array, offset, s, value));
+			ret = (bslr(array, offset, s, value));
+			/*printf("a.left: %i, a.m: %i\n", left, m);*/
+			return (ret);
 		}
 		return (m + left);
 	}

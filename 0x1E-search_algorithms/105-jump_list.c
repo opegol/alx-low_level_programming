@@ -14,7 +14,7 @@
  */
 listint_t *jump_list(listint_t *list, size_t size, int value)
 {
-	size_t b = lit->index, sqr = sqrt(size), a = 0, i;
+	size_t b = list->index, sqr = sqrt(size), a = 0, i;
 	listint_t *temp;
 
 	if (list == NULL || size == 0)
