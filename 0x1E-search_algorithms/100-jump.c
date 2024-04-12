@@ -20,7 +20,7 @@ int jump_search(int *array, size_t size, int value)
 
 	a = 0;
 	min = 0;
-	sqr = (int)sqrt(size);
+	sqr = sqrt(size);
 	b = 0;
 
 	/*printf("size: %li, sqr: %li\n", size, sqr);*/
