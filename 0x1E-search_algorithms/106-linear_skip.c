@@ -3,50 +3,43 @@
 #include "search_algos.h"
 #include <math.h>
 
+
 /**
- * jump_list - searches for a value in a sorted list of integers
+ * linear_skip - searches for a value in a sorted list of integers
  *		using the Jump search algorithm.
- * @list: pointer to the  head of the list to search in.
- * @size: number of nodes in list
+ * @list: pointer to the  head of the skip list to search in.
  * @value: value to search for
  * Return: pointer to the first node where value is located
  *		or NULL If not present
  */
-listint_t *jump_list(listint_t *list, size_t size, int value)
+skiplist_t *linear_skip(skiplist_t *list, int value)
 {
-	size_t b = lit->index, sqr = sqrt(size), a = 0, i;
-	listint_t *temp;
+	skiplist_t *temp, *last;
 
-	if (list == NULL || size == 0)
+	if (list == NULL)
 		return (NULL);
-
-	while (list && (list->n < value))
+	while (list->n < value)
 	{
-		a = b;
-		b += sqr;
-		if (a >= size - 1)
+		temp = list;
+		list = list->express;
+		if (!list)
 		{
-			printf("Value checked at index[%li] = [%d]\n", list->index, list->n);
+			last = temp;
+			while (last)
+			{
+				list = last;
+				last = last->next;
+			}
 			break;
 		}
-		if (b >= size - 1)
-		{
-			temp = list;
-			for (i = a; i < (size - 1); i++)
-				list = list->next;
-			continue;
-		}
-		temp = list;
-		for (i = 0; i < sqr; i++)
-			list = list->next;
-		printf("Value checked at index[%li] = [%d]\n", list->index, list->n);
+		printf("Value checked at index [%li] = [%d]\n", list->index, list->n);
 	}
 	printf("Value found between indexes [%li] and [%li]\n",
 		temp->index, list->index);
 
 	while (temp->n <= list->n)
 	{
-		printf("Value checked at index[%li] = [%d]\n", temp->index, temp->n);
+		printf("Value checked at index [%li] = [%d]\n", temp->index, temp->n);
 		if (temp->n == value)
 			return (temp);
 		temp = temp->next;
